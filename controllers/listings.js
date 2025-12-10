@@ -1,15 +1,19 @@
 // controllers/listings.js
-const isSignedIn = require('../middleware/is-signed-in');
 const express = require('express');
 const Listing = require('../models/listing');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
+    if (req.session.user)
+    {
     const listings = await Listing.find({}).populate('owner');
-    res.render('listings/index.ejs', {
-      listings: listings,
-    });
+    res.render('listings/index.ejs', {listings: listings,});
+    }
+    else
+    {
+      res.redirect('/sign-in');
+    }
     } catch (error) {
     console.error(error);
     res.redirect('/');
@@ -37,8 +41,15 @@ req.body.owner = req.session.user._id;
 
 router.get('/:id', async (req, res) => {
     try {
+    if (req.session.user)
+    {
     const listing = await Listing.findById(req.params.id).populate("owner");
     res.render('listings/show.ejs',{listing});
+    }
+    else
+    {
+      res.redirect('/sign-in');
+    }
     } catch (error) {
     console.error(error);
     res.redirect('/listings');

@@ -50,6 +50,7 @@ app.get('/', async (req, res) => {
   res.render('index.ejs');
 });
 
+//Logged-in user cannot manage sign in or up during its session unless when logged out
 app.get('/auth/sign-in', async (req, res, next) => {
   if (req.session.user)
   {

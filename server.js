@@ -50,6 +50,30 @@ app.get('/', async (req, res) => {
   res.render('index.ejs');
 });
 
+app.get('/auth/sign-in', async (req, res, next) => {
+  if (req.session.user)
+  {
+    console.log("You are already logged in!!")
+    res.redirect('/');
+  }
+  else
+  {
+  next();
+  }
+});
+
+app.get('/auth/sign-up', async (req, res, next) => {
+  if (req.session.user)
+  {
+    console.log("Log out first to manage the sign up page")
+    res.redirect('/');
+  }
+  else
+  {
+  next();
+  }
+});
+
 app.use('/auth', authCtrl);
 
 app.use('/listings', listingsCtrl);

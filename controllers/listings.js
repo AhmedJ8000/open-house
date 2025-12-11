@@ -77,10 +77,17 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/:id/edit', async (req, res) => {
   try {
+    if (req.session.user)
+    {
     const currentListing = await Listing.findById(req.params.id);
     res.render('listings/edit.ejs', {
       listing: currentListing,
     });
+    }
+    else
+    {
+      res.redirect('/sign-in');
+    }
   } catch (error) {
     console.log(error);
     res.redirect('/');
